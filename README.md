@@ -1,1 +1,1 @@
-https://gabalpha.github.io/read-audio/?p=<audio_url>
+https://gabalpha.github.io/read-audio/?p=<https://github.com/akaserein/prithithefinalboss/blob/main/AverageNonIITIAN.mp3>
