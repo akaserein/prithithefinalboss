@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tic Tac Toe</title>
+  <style>
+    body {
+      background: #000;
+      color: #ffb6c1;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 10px;
+    }
+    .cell {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .1s, background .3s;
+      color: #ffb6c1;
+    }
+    .cell:active { transform: scale(0.92); }
+    .cell.win { background: #ffb6c1; color: #000; }
+    .status {
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    button {
+      margin-top: 12px;
+      background: transparent;
+      border: 1px solid #ffb6c1;
+      color: #ffb6c1;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: #ffb6c1;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Tic Tac Toe</h1>
+  <div class="board" id="board"></div>
+  <div class="status" id="status">Turn: X</div>
+  <button onclick="startGame()">Restart</button>
+
+  <script>
+    const boardEl = document.getElementById("board");
+    const statusEl = document.getElementById("status");
+    let board, current, running;
+
+    const WIN_COMBOS = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+
+    function startGame() {
+      board = Array(9).fill("");
+      current = "X";
+      running = true;
+      statusEl.textContent = "Turn: " + current;
+      render();
+    }
+
+    function render() {
+      boardEl.innerHTML = "";
+      board.forEach((val, i) => {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.textContent = val;
+        cell.onclick = () => handleClick(i, cell);
+        boardEl.appendChild(cell);
+      });
+    }
+
+    function handleClick(i, cell) {
+      if (!running || board[i]) return;
+      board[i] = current;
+      render();
+      if (checkWin()) {
+        statusEl.textContent = current + " wins!";
+        highlightWin();
+        running = false;
+        return;
+      }
+      if (board.every(v => v)) {
+        statusEl.textContent = "Draw!";
+        running = false;
+        return;
+      }
+      current = current === "X" ? "O" : "X";
+      statusEl.textContent = "Turn: " + current;
+    }
+
+    function checkWin() {
+      return WIN_COMBOS.some(([a,b,c]) =>
+        board[a] && board[a] === board[b] && board[a] === board[c]
+      );
+    }
+
+    function highlightWin() {
+      WIN_COMBOS.forEach(([a,b,c]) => {
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          const cells = boardEl.querySelectorAll(".cell");
+          cells[a].classList.add("win");
+          cells[b].classList.add("win");
+          cells[c].classList.add("win");
+        }
+      });
+    }
+
+    startGame();
+  </script>
+</body>
+</html>
