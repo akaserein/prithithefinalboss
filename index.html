@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Prithi The Final Boss</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body {
       font-family: Inter, system-ui, sans-serif;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      background: linear-gradient(-45deg, #000000, #1a1a1a, #ffb6c1, #000000);
-      background-size: 400% 400%;
-      animation: gradientMove 12s ease infinite;
+      background: #000;
       color: #ffb6c1;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .container {
-      text-align:center;
-      background: rgba(0,0,0,0.7);
-      padding: 32px;
+    .wrapper {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      background: #111;
+      padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-      width: min(90%, 500px);
+      box-shadow: 0 8px 25px rgba(255,182,193,0.2);
+    }
+
+    .player {
+      text-align: center;
+      max-width: 300px;
     }
 
     h1 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
+      font-size: 1.6rem;
+      margin-bottom: 15px;
       font-weight: 600;
       color: #ffb6c1;
     }
@@ -44,31 +42,80 @@
       width: 100%;
       outline: none;
       border-radius: 12px;
-      background: #111;
-      padding: 8px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: #000;
+      padding: 6px;
     }
 
-    audio:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 15px rgba(255, 182, 193, 0.5);
+    /* Pink Bars Animation */
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 80px;
     }
 
-    footer {
-      margin-top: 18px;
+    .bar {
+      width: 6px;
+      background: #ffb6c1;
+      animation: bounce 1s infinite ease-in-out;
+    }
+
+    .bar:nth-child(2){animation-delay:0.2s}
+    .bar:nth-child(3){animation-delay:0.4s}
+    .bar:nth-child(4){animation-delay:0.6s}
+    .bar:nth-child(5){animation-delay:0.8s}
+
+    @keyframes bounce {
+      0%,100% {height: 20px;}
+      50% {height: 80px;}
+    }
+
+    /* Info Section */
+    .info {
+      margin-top: 15px;
       font-size: 0.9rem;
       color: #aaa;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🎧 Average Non IITIAN</h1>
-    <audio controls>
-      <source src="AverageNonIITIAN.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-    <footer>Pink + Black Vibes ✨</footer>
+  <div class="wrapper">
+    <div class="player">
+      <h1>🎧 Average Non IITIAN</h1>
+      <audio controls>
+        <source src="AverageNonIITIAN.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      <div class="info">
+        <div id="time"></div>
+        <div id="date"></div>
+        <div id="weather">Weather: 🌤️ Loading...</div>
+      </div>
+    </div>
+    <div class="bars">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
   </div>
+
+  <script>
+    // Time & Date Update
+    function updateTime() {
+      const now = new Date();
+      document.getElementById("time").textContent =
+        "⏰ " + now.toLocaleTimeString();
+      document.getElementById("date").textContent =
+        "📅 " + now.toLocaleDateString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Weather (Placeholder only)
+    document.getElementById("weather").textContent =
+      "☁️ Weather: Add API here";
+  </script>
 </body>
 </html>
