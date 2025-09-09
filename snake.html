@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake Cursor Game</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #222;
+    color: #fff;
+    font-family: sans-serif;
+  }
+  canvas {
+    display: block;
+    background: #333;
+  }
+  #score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+  }
+</style>
+</head>
+<body>
+<div id="score">Score: 0</div>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let snake = [{x: canvas.width/2, y: canvas.height/2}];
+let snakeLength = 5;
+let snakeSpeed = 2;
+let score = 0;
+let target = getRandomPoint();
+
+let mouse = {x: canvas.width/2, y: canvas.height/2};
+
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+window.addEventListener('touchmove', e => {
+  e.preventDefault();
+  mouse.x = e.touches[0].clientX;
+  mouse.y = e.touches[0].clientY;
+}, {passive:false});
+
+function getRandomPoint() {
+  return {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height
+  };
+}
+
+function update() {
+  // Move snake towards mouse
+  let dx = mouse.x - snake[0].x;
+  let dy = mouse.y - snake[0].y;
+  let dist = Math.sqrt(dx*dx + dy*dy);
+
+  if(dist > 1){
+    snake[0].x += dx/dist * snakeSpeed;
+    snake[0].y += dy/dist * snakeSpeed;
+  }
+
+  // Add new head
+  snake.unshift({x: snake[0].x, y: snake[0].y});
+  if(snake.length > snakeLength) snake.pop();
+
+  // Check collision with target
+  if(Math.abs(snake[0].x - target.x) < 10 && Math.abs(snake[0].y - target.y) < 10){
+    score++;
+    snakeLength++;
+    target = getRandomPoint();
+    document.getElementById('score').innerText = "Score: " + score;
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw snake
+  ctx.fillStyle = 'lime';
+  for(let part of snake){
+    ctx.fillRect(part.x-5, part.y-5, 10, 10);
+  }
+
+  // Draw target
+  ctx.fillStyle = 'red';
+  ctx.beginPath();
+  ctx.arc(target.x, target.y, 10, 0, Math.PI*2);
+  ctx.fill();
+}
+
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+</script>
+</body>
+</html>
