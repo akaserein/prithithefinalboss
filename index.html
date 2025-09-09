@@ -21,19 +21,19 @@
       align-items: center;
       gap: 40px;
       background: #111;
-      padding: 30px;
-      border-radius: 20px;
+      padding: 24px;
+      border-radius: 16px;
       box-shadow: 0 8px 25px rgba(255,182,193,0.2);
     }
 
     .player {
       text-align: center;
-      max-width: 300px;
+      max-width: 240px;
     }
 
     h1 {
-      font-size: 1.6rem;
-      margin-bottom: 15px;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
       font-weight: 600;
       color: #ffb6c1;
     }
@@ -41,9 +41,9 @@
     audio {
       width: 100%;
       outline: none;
-      border-radius: 12px;
+      border-radius: 8px;
       background: #000;
-      padding: 6px;
+      padding: 4px;
     }
 
     /* Pink Bars Animation */
@@ -51,7 +51,7 @@
       display: flex;
       align-items: flex-end;
       gap: 6px;
-      height: 80px;
+      height: 60px;
     }
 
     .bar {
@@ -66,14 +66,14 @@
     .bar:nth-child(5){animation-delay:0.8s}
 
     @keyframes bounce {
-      0%,100% {height: 20px;}
-      50% {height: 80px;}
+      0%,100% {height: 16px;}
+      50% {height: 60px;}
     }
 
     /* Info Section */
     .info {
-      margin-top: 15px;
-      font-size: 0.9rem;
+      margin-top: 12px;
+      font-size: 0.85rem;
       color: #aaa;
     }
   </style>
@@ -89,7 +89,7 @@
       <div class="info">
         <div id="time"></div>
         <div id="date"></div>
-        <div id="weather">Weather: 🌤️ Loading...</div>
+        <div id="weather">🌤️ Loading weather...</div>
       </div>
     </div>
     <div class="bars">
@@ -113,9 +113,26 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    // Weather (Placeholder only)
-    document.getElementById("weather").textContent =
-      "☁️ Weather: Add API here";
+    // Weather (OpenWeatherMap API)
+    async function fetchWeather() {
+      try {
+        const apiKey = "YOUR_API_KEY"; // <-- yaha apna API key daalo
+        const city = "Delhi"; // apna city naam change kar lo
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.main) {
+          document.getElementById("weather").textContent =
+            `🌡️ ${data.main.temp}°C | ${data.weather[0].description}`;
+        } else {
+          document.getElementById("weather").textContent = "⚠️ Weather unavailable";
+        }
+      } catch (e) {
+        document.getElementById("weather").textContent = "⚠️ Weather error";
+      }
+    }
+    fetchWeather();
   </script>
 </body>
 </html>
