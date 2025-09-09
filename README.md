@@ -1,3 +1,9 @@
+
+# Prithi The Final Boss
+
+## Listen to the Audio 🎧
+
 <audio controls>
-  <source src="https://raw.githubusercontent.com/akaserein/prithithefinalboss/main/AverageNonIITIAN.mp3" type="audio/mpeg">
+  <source src="AverageNonIITIAN.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
 </audio>
