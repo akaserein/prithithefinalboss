@@ -8,192 +8,161 @@
     :root{
       --pink: #ffb6c1;
       --black: #000;
+      --card-bg: rgba(255,255,255,0.03);
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body {
-      font-family: Inter, system-ui, sans-serif;
-      background: #000;
-      color: var(--pink);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: 20px;
-    }
-    /* background animation */
-    body {
-      background: linear-gradient(-45deg,#000,#1a1a1a,#000,var(--pink));
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,sans-serif;background:#000;color:var(--pink)}
+    body{
+      background: linear-gradient(-45deg,#000000,#0a0a0a,#110101,var(--pink));
       background-size:400% 400%;
       animation:bgShift 12s ease infinite;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      flex-direction:column;
     }
-    @keyframes bgShift {
+    @keyframes bgShift{
       0%{background-position:0% 50%}
       50%{background-position:100% 50%}
       100%{background-position:0% 50%}
     }
 
     .card {
-      background: rgba(255,255,255,0.03);
-      padding:20px;
-      border-radius:16px;
+      width:min(920px,96vw);
+      background:var(--card-bg);
+      border-radius:14px;
+      padding:18px;
       display:flex;
+      gap:26px;
       align-items:center;
-      gap:30px;
-      box-shadow:0 8px 25px rgba(0,0,0,0.6);
+      box-shadow:0 10px 30px rgba(0,0,0,0.6);
+      backdrop-filter:blur(6px);
     }
-    h1 {font-size:1.2rem;margin-bottom:8px}
+    .left{flex:1;display:flex;flex-direction:column;gap:10px}
+    h1{font-size:1.05rem;margin:0;color:var(--pink);font-weight:600}
+    .tag{font-size:0.8rem;color:#ffdfe6;padding:4px 8px;border-radius:999px;background:rgba(255,182,193,0.06)}
 
-    audio {width:240px;border-radius:8px}
+    .player-wrap{width:100%;display:flex;align-items:center;gap:12px}
+    audio{width:100%;height:36px;border-radius:8px;background:#050505;padding:6px}
 
-    .visual {display:flex;gap:8px;align-items:flex-end;height:80px}
-    .bar {width:10px;background:var(--pink);height:20px;border-radius:6px;transition:height 0.1s}
+    .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .btn,.small{background:transparent;border:1px solid rgba(255,182,193,0.09);color:var(--pink);padding:8px 10px;border-radius:8px;cursor:pointer;font-size:0.9rem}
+    .btn:hover,.small:hover{transform:translateY(-2px);transition:0.15s}
+    .small{padding:6px 8px;font-size:0.85rem}
+    .speed-row{display:flex;gap:8px;align-items:center}
+    .speed-display{min-width:56px;text-align:center;color:#ffdfe6;font-size:0.9rem}
+    input[type="range"]{-webkit-appearance:none;width:160px;background:transparent}
+    input[type="range"]::-webkit-slider-runnable-track{height:6px;background:rgba(255,182,193,0.12);border-radius:6px}
+    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;margin-top:-6px;width:16px;height:16px;border-radius:50%;background:var(--pink);box-shadow:0 1px 6px rgba(0,0,0,0.6)}
 
-    .info {margin-top:10px;font-size:0.9rem}
-    #time {font-size:1.3rem;font-weight:600;text-shadow:0 0 10px rgba(255,182,193,0.8)}
-    #date {color:#ccc;font-size:0.85rem;margin-top:4px}
-    #weather {margin-top:6px;font-size:0.9rem;color:#aaa}
+    .meta{margin-top:6px;color:#bbb;font-size:0.85rem}
+    .visual{width:170px;display:flex;align-items:flex-end;gap:8px;height:84px;justify-content:center}
+    .bar{width:12px;background:linear-gradient(180deg,rgba(255,182,193,1),rgba(255,182,193,0.25));border-radius:6px;height:12px;transition:height 120ms linear}
+    .footer{margin-top:8px;color:#9a9a9a;font-size:0.8rem}
+    @media(max-width:720px){.card{flex-direction:column;gap:12px;align-items:center;padding:16px}.visual{width:100%;justify-content:space-around;height:64px}.left{align-items:center;text-align:center}.player-wrap{flex-direction:column;gap:8px}}
 
-    /* button styles */
-    .btn {
-      background: transparent;
-      border:1px solid rgba(255,182,193,0.4);
-      color:var(--pink);
-      padding:8px 14px;
-      border-radius:8px;
-      cursor:pointer;
-      font-size:0.9rem;
-      margin-top:10px;
-    }
-    .btn:hover{background:rgba(255,182,193,0.1)}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(255,255,255,0.06);color:#fff;padding:10px 14px;border-radius:8px;font-size:0.9rem;box-shadow:0 8px 30px rgba(0,0,0,0.6);opacity:0;transition:opacity 220ms ease,transform 220ms ease}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 
-    /* TicTacToe modal */
-    .modal {
-      position:fixed;inset:0;
-      background:rgba(0,0,0,0.85);
-      display:none;
-      justify-content:center;
-      align-items:center;
-      z-index:1000;
-    }
+    /* TTT modal */
+    .modal{position:fixed;inset:0;background:#000;display:none;justify-content:center;align-items:center;z-index:1000;flex-direction:column;gap:20px}
     .modal.active{display:flex}
-    .game {
-      display:grid;
-      grid-template-columns:repeat(3,80px);
-      gap:5px;
-    }
-    .cell {
-      width:80px;height:80px;
-      background:#111;
-      display:flex;justify-content:center;align-items:center;
-      font-size:2rem;font-weight:600;
-      color:var(--pink);
-      cursor:pointer;
-      border-radius:8px;
-    }
-    .closeBtn {
-      position:absolute;top:20px;right:20px;
-      background:#222;color:var(--pink);padding:6px 10px;
-      border:none;border-radius:6px;cursor:pointer;
-    }
+    .game{display:grid;grid-template-columns:repeat(3,100px);gap:10px}
+    .cell{width:100px;height:100px;background:#111;display:flex;justify-content:center;align-items:center;font-size:2rem;font-weight:600;color:var(--pink);cursor:pointer;border-radius:10px;box-shadow:0 4px 12px rgba(255,182,193,0.2)}
+    .closeBtn{background:#222;color:var(--pink);padding:10px 16px;border:none;border-radius:8px;cursor:pointer;font-size:0.9rem}
+    .closeBtn:hover{background:#333}
+    .winner{font-size:1.2rem;color:#fff;margin-top:10px}
   </style>
 </head>
 <body>
   <div class="card">
-    <div>
-      <h1>🎧 Average Non IITIAN</h1>
-      <audio id="player" controls>
-        <source src="AverageNonIITIAN.mp3" type="audio/mpeg">
-      </audio>
-      <div class="info">
-        <div id="time"></div>
-        <div id="date"></div>
-        <div id="weather">🌤️ Loading weather...</div>
+    <div class="left">
+      <div class="title">
+        <h1>Average Non IITIAN</h1>
+        <div class="tag">Prithi The Final Boss</div>
       </div>
+      <div class="player-wrap">
+        <audio id="player" controls preload="auto">
+          <source src="AverageNonIITIAN.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+      <div class="controls">
+        <div class="speed-row">
+          <button class="small" id="decSpeed">-</button>
+          <input id="speedRange" type="range" min="0.5" max="2" step="0.05" value="1">
+          <button class="small" id="incSpeed">+</button>
+          <div class="speed-display" id="speedDisplay">1.00×</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-left:8px;">
+          <button class="btn" id="modeBtn">Mode: Audio</button>
+          <button class="btn" id="randomBtn">Randomize</button>
+          <button class="btn" id="shareBtn">Share</button>
+        </div>
+      </div>
+      <div class="meta"><div id="time">⏰ --:--:--</div><div id="date">📅 --/--/----</div></div>
+      <div class="footer">Tip: Play audio once to enable visual mode.</div>
     </div>
     <div class="visual" id="visual">
       <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
     </div>
   </div>
+  <button class="btn" id="tttBtn" style="margin-top:20px;">Play TTT</button>
+  <div id="toast" class="toast"></div>
 
-  <button class="btn" id="tttBtn">Play TTT</button>
-
-  <!-- Modal for TicTacToe -->
+  <!-- TTT Modal -->
   <div class="modal" id="tttModal">
-    <button class="closeBtn" onclick="closeTTT()">X</button>
     <div class="game" id="game"></div>
+    <div class="winner" id="winner"></div>
+    <button class="closeBtn" onclick="closeTTT()">Return to Prithi's legacy page</button>
   </div>
 
   <script>
-    // Time & Date
-    function updateTime(){
-      const now=new Date();
-      document.getElementById("time").textContent=now.toLocaleTimeString();
-      document.getElementById("date").textContent=now.toLocaleDateString();
-    }
+    // Time/date
+    function updateTime(){const now=new Date();
+      document.getElementById('time').textContent='⏰ '+now.toLocaleTimeString();
+      document.getElementById('date').textContent='📅 '+now.toLocaleDateString();}
     setInterval(updateTime,1000);updateTime();
 
-    // Weather (OpenWeatherMap)
-    async function fetchWeather(){
-      const apiKey="YOUR_API_KEY"; // replace
-      const city="Delhi";
-      try{
-        const res=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-        const data=await res.json();
-        if(data.main){
-          document.getElementById("weather").textContent=`🌡️ ${data.main.temp}°C | ${data.weather[0].description}`;
-        }
-      }catch(e){
-        document.getElementById("weather").textContent="⚠️ Weather unavailable";
-      }
-    }
-    fetchWeather();
+    // Speed
+    const audio=document.getElementById('player');
+    const speedRange=document.getElementById('speedRange');
+    const speedDisplay=document.getElementById('speedDisplay');
+    document.getElementById('decSpeed').onclick=()=>setSpeed((+speedRange.value-0.1).toFixed(2));
+    document.getElementById('incSpeed').onclick=()=>setSpeed((+speedRange.value+0.1).toFixed(2));
+    speedRange.oninput=e=>setSpeed(e.target.value);
+    function setSpeed(v){v=Math.max(0.5,Math.min(2,Number(v)));audio.playbackRate=v;speedRange.value=v;speedDisplay.textContent=v.toFixed(2)+'×'}
+    setSpeed(1);
 
-    // Bars random animation
-    const bars=document.querySelectorAll(".bar");
-    setInterval(()=>{
-      bars.forEach(b=>{
-        const h=20+Math.random()*60;
-        b.style.height=h+"px";
-      });
-    },200);
+    // Toast
+    const toast=document.getElementById('toast');
+    function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toast.classList.remove('show'),2000)}
 
-    // TicTacToe
-    const modal=document.getElementById("tttModal");
-    const game=document.getElementById("game");
-    document.getElementById("tttBtn").onclick=()=>{openTTT()};
-    function openTTT(){
-      modal.classList.add("active");
-      startGame();
-    }
-    function closeTTT(){modal.classList.remove("active")}
+    // Share
+    document.getElementById('shareBtn').onclick=async()=>{
+      const data={title:document.title,text:'Listen: Average Non IITIAN',url:location.href};
+      try{if(navigator.share){await navigator.share(data)}else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);showToast('Link copied!')}}catch(e){showToast('Share cancelled')}}
 
-    let current="X", board=[];
-    function startGame(){
-      board=Array(9).fill("");
-      game.innerHTML="";
-      board.forEach((_,i)=>{
-        const cell=document.createElement("div");
-        cell.className="cell";
-        cell.onclick=()=>move(i,cell);
-        game.appendChild(cell);
-      });
-    }
-    function move(i,cell){
-      if(board[i])return;
-      board[i]=current;
-      cell.textContent=current;
-      if(checkWin()){
-        setTimeout(()=>{alert(current+" wins!");startGame();},50);
-      }else if(board.every(v=>v)){
-        setTimeout(()=>{alert("Draw!");startGame();},50);
-      }
-      current=current==="X"?"O":"X";
-    }
-    function checkWin(){
-      const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-      return wins.some(([a,b,c])=>board[a]&&board[a]===board[b]&&board[a]===board[c]);
-    }
+    // Visual bars random
+    const bars=document.querySelectorAll('.bar');let visualMode='audio';
+    document.getElementById('modeBtn').onclick=()=>{visualMode=(visualMode==='audio'?'random':'audio');document.getElementById('modeBtn').textContent='Mode: '+(visualMode==='audio'?'Audio':'Random')};
+    document.getElementById('randomBtn').onclick=()=>triggerRandomBurst();
+    function drawLoop(){if(visualMode==='random'){bars.forEach(b=>{b.style.height=(10+Math.random()*70)+'px'})}else{const t=Date.now()/1000;bars.forEach((b,i)=>{b.style.height=(20+30*Math.abs(Math.sin(t+i)))+'px'})}requestAnimationFrame(drawLoop)}drawLoop();
+    function triggerRandomBurst(){bars.forEach(b=>b.style.height=(20+Math.random()*80)+'px')}
+
+    // TTT
+    const modal=document.getElementById('tttModal');const game=document.getElementById('game');const winner=document.getElementById('winner');
+    document.getElementById('tttBtn').onclick=()=>openTTT();
+    function openTTT(){modal.classList.add('active');startGame()}
+    function closeTTT(){modal.classList.remove('active')}
+    let current,board;
+    function startGame(){board=Array(9).fill('');current='X';winner.textContent='';game.innerHTML='';
+      board.forEach((_,i)=>{const cell=document.createElement('div');cell.className='cell';cell.onclick=()=>move(i,cell);game.appendChild(cell)})}
+    function move(i,cell){if(board[i])return;board[i]=current;cell.textContent=current;
+      if(checkWin()){winner.textContent=current+' wins!';setTimeout(startGame,1500)}
+      else if(board.every(Boolean)){winner.textContent='Draw!';setTimeout(startGame,1500)}
+      current=current==='X'?'O':'X'}
+    function checkWin(){return[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(([a,b,c])=>board[a]&&board[a]===board[b]&&board[a]===board[c])}
   </script>
 </body>
 </html>
