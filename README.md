@@ -1,1 +1,3 @@
-https://gabalpha.github.io/read-audio/?p=<https://github.com/akaserein/prithithefinalboss/blob/main/AverageNonIITIAN.mp3>
+<audio controls>
+  <source src="https://raw.githubusercontent.com/akaserein/prithithefinalboss/main/AverageNonIITIAN.mp3" type="audio/mpeg">
+</audio>
