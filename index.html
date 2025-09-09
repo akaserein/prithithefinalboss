@@ -398,3 +398,101 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+<!-- Tic Tac Toe Section -->
+<div id="tttSection" style="margin-top:40px; text-align:center;">
+  <h2 style="color:#ffb6c1; font-family:system-ui;">🎮 Play Tic Tac Toe</h2>
+  <div class="board" id="board"></div>
+  <div class="status" id="status">Turn: X</div>
+  <button onclick="startGame()" style="margin-top:12px; background:transparent; border:1px solid #ffb6c1; color:#ffb6c1; padding:6px 12px; border-radius:6px; cursor:pointer;">Restart</button>
+</div>
+
+<style>
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-template-rows: repeat(3, 80px);
+    gap: 8px;
+    justify-content:center;
+    margin-top:15px;
+  }
+  .cell {
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform .1s;
+    color: #ffb6c1;
+  }
+  .cell:active { transform: scale(0.92); }
+  #status { margin-top: 10px; color:#ddd; font-weight:600; }
+</style>
+
+<script>
+  const boardEl = document.getElementById("board");
+  const statusEl = document.getElementById("status");
+  let board, current, running;
+
+  const WIN_COMBOS = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+
+  function startGame() {
+    board = Array(9).fill("");
+    current = "X";
+    running = true;
+    statusEl.textContent = "Turn: " + current;
+    render();
+  }
+
+  function render() {
+    boardEl.innerHTML = "";
+    board.forEach((val, i) => {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.textContent = val;
+      cell.onclick = () => handleClick(i);
+      boardEl.appendChild(cell);
+    });
+  }
+
+  function handleClick(i) {
+    if (!running || board[i]) return;
+    board[i] = current;
+    if (checkWin()) {
+      statusEl.textContent = current + " wins!";
+      running = false;
+      return;
+    }
+    if (board.every(v => v)) {
+      statusEl.textContent = "Draw!";
+      running = false;
+      return;
+    }
+    current = current === "X" ? "O" : "X";
+    statusEl.textContent = "Turn: " + current;
+    render();
+  }
+
+  function checkWin() {
+    return WIN_COMBOS.some(([a,b,c]) =>
+      board[a] && board[a] === board[b] && board[a] === board[c]
+    );
+  }
+
+  startGame();
+</script>
