@@ -15,3 +15,8 @@
 # 🎮 Tic Tac Toe
 
 [![Play TTT](https://img.shields.io/badge/🎮-Play_TTT-pink?style=for-the-badge&logo=github)](https://akaserein.github.io/prithithefinalboss/ttt.html)
+
+
+
+# # snake ❌️ mriganga ✅️
+[![Play TTT](https://img.shields.io/badge/🎮-Play_TTT-pink?style=for-the-badge&logo=github)](https://akaserein.github.io/prithithefinalboss/snake.html)
