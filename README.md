@@ -1,4 +1,3 @@
-
 # Prithi The Final Boss
 
 ## Listen to the Audio 🎧
