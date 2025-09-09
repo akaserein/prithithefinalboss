@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prithi The Final Boss</title>
   <style>
+    /* Background animation */
     body {
       margin: 0;
       padding: 0;
@@ -14,31 +15,66 @@
       align-items: center;
       flex-direction: column;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      background: linear-gradient(-45deg, #1e3c72, #2a5298, #ff6a00, #ee0979);
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
       color: white;
       text-align: center;
+      overflow: hidden;
     }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
-    audio {
-      width: 300px;
-      margin-top: 10px;
-    }
+
+    /* Card styling */
     .card {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
       padding: 30px;
       border-radius: 20px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       backdrop-filter: blur(10px);
+      animation: fadeIn 2s ease-in-out;
     }
+
+    /* Heading glow effect */
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #00c3ff, 0 0 30px #00c3ff; }
+      to { text-shadow: 0 0 20px #ff0099, 0 0 30px #ff0099, 0 0 40px #ff0099; }
+    }
+
+    /* Audio styling */
+    audio {
+      width: 320px;
+      margin-top: 15px;
+      transform: scale(1);
+      transition: transform 0.3s ease;
+    }
+    audio:hover {
+      transform: scale(1.05);
+    }
+
+    /* Fade in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer */
     footer {
       position: absolute;
       bottom: 15px;
       font-size: 0.9rem;
-      opacity: 0.7;
+      opacity: 0.8;
+      animation: fadeIn 4s ease-in-out;
     }
   </style>
 </head>
