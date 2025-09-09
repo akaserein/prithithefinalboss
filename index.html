@@ -1,94 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prithi The Final Boss</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Prithi The Final Boss — Interactive</title>
   <style>
-    /* Background animation */
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(-45deg, #1e3c72, #2a5298, #ff6a00, #ee0979);
-      background-size: 400% 400%;
-      animation: gradientMove 12s ease infinite;
-      color: white;
-      text-align: center;
-      overflow: hidden;
+    :root{
+      --h1: 210, 100%, 65%;
+      --h2: 320, 90%, 55%;
+      --accentA: 210, 90%, 45%;
+      --accentB: 320, 80%, 50%;
+      --card-blur: 10px;
     }
 
-    @keyframes gradientMove {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial}
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background: radial-gradient(circle at 10% 20%, hsl(var(--accentA)), transparent 30%),
+                  radial-gradient(circle at 90% 80%, hsl(var(--accentB)), transparent 35%),
+                  linear-gradient(135deg, hsl(var(--h1)), hsl(var(--h2)));
+      transition: background 400ms linear;
+      min-height:100vh;
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* Card styling */
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-      animation: fadeIn 2s ease-in-out;
+    .wrap{
+      width:min(880px, 96vw);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:20px;
+      padding:32px;
+      border-radius:18px;
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(var(--card-blur));
+      transform:translateZ(0);
     }
 
-    /* Heading glow effect */
-    h1 {
-      font-size: 2.8rem;
-      margin-bottom: 20px;
-      animation: glow 2s infinite alternate;
+    h1{
+      margin:0;
+      font-size:clamp(1.4rem, 3.5vw, 3rem);
+      color: hsl(var(--h2));
+      text-shadow: 0 6px 18px rgba(0,0,0,0.45), 0 0 18px rgba(255,255,255,0.06);
+      transition: color 180ms linear, text-shadow 180ms linear;
+      letter-spacing:0.6px;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
 
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #fff, 0 0 20px #00c3ff, 0 0 30px #00c3ff; }
-      to { text-shadow: 0 0 20px #ff0099, 0 0 30px #ff0099, 0 0 40px #ff0099; }
+    .badge{
+      font-size:0.9rem;
+      padding:6px 10px;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
     }
 
-    /* Audio styling */
-    audio {
-      width: 320px;
-      margin-top: 15px;
-      transform: scale(1);
-      transition: transform 0.3s ease;
+    audio{
+      width:min(560px, 86vw);
+      max-width:100%;
+      border-radius:10px;
+      outline:none;
+      background: rgba(255,255,255,0.03);
+      padding:8px;
+      transition: transform 220ms ease;
     }
-    audio:hover {
-      transform: scale(1.05);
+    audio:active{ transform: scale(1.02) }
+
+    .controls-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:6px;
+      flex-wrap:wrap;
+      justify-content:center;
     }
 
-    /* Fade in animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .btn{
+      padding:8px 12px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.04);
+      color:white;
+      cursor:pointer;
+      user-select:none;
+      font-size:0.95rem;
+    }
+    .btn:active{ transform: translateY(1px) scale(0.995) }
+
+    footer{
+      position:fixed;
+      bottom:12px;
+      left:12px;
+      font-size:0.85rem;
+      color:rgba(255,255,255,0.75);
+      opacity:0.9;
+      backdrop-filter: blur(2px);
+      padding:6px 10px;
+      border-radius:8px;
+      background: rgba(0,0,0,0.18);
     }
 
-    /* Footer */
-    footer {
+    /* ripple container */
+    .ripple {
       position: absolute;
-      bottom: 15px;
-      font-size: 0.9rem;
-      opacity: 0.8;
-      animation: fadeIn 4s ease-in-out;
+      border-radius: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.35;
+      animation: ripple 600ms ease-out forwards;
+      background: radial-gradient(circle, rgba(255,255,255,0.45), rgba(255,255,255,0.05));
+    }
+    @keyframes ripple {
+      from { width: 8px; height: 8px; opacity: 0.5; }
+      to   { width: 500px; height: 500px; opacity: 0; }
+    }
+
+    /* small responsive tweak */
+    @media (max-width:520px){
+      .wrap{ padding:20px; border-radius:12px }
+      h1{ font-size:1.6rem }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>🎧 Average Non IITIAN</h1>
-    <audio controls autoplay>
-      <source src="AverageNonIITIAN.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
+  <div class="wrap" id="wrap">
+    <h1 id="title"><span class="badge">🎧</span> Average Non IITIAN</h1>
+
+    <div class="controls-row">
+      <audio id="player" controls preload="auto">
+        <source src="AverageNonIITIAN.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+
+      <button class="btn" id="toggleAutoplay">Toggle Autoplay</button>
+      <button class="btn" id="randomize">Randomize Colors</button>
+    </div>
   </div>
 
-  <footer>
-    Made with ❤️ by Prithi The Final Boss
-  </footer>
+  <footer>Touch / Move to change colors • Tap to ripple</footer>
+
+  <script>
+    // Get elements
+    const root = document.documentElement;
+    const body = document.body;
+    const wrap = document.getElementById('wrap');
+    const title = document.getElementById('title');
+    const player = document.getElementById('player');
+    const toggleAutoplay = document.getElementById('toggleAutoplay');
+    const randomize = document.getElementById('randomize');
+
+    // Helper: map a value from [0,1] to [a,b]
+    const lerp = (a,b,t) => a + (b-a)*t;
+
+    // Update colors based on normalized pointer (nx, ny) in [0..1]
+    function updateColors(nx, ny){
+      // Hues vary across screen: pick ranges you like
+      const hueA = Math.round( lerp(190, 260, nx) ); // blue-ish -> purple
+      const hueB = Math.round( lerp(300, 20, ny) );  // purple -> orange
+      const hue1 = Math.round( lerp(160, 320, (nx+ny)/2) ); // base grad
+      const hue2 = Math.round( lerp(280, 320, nx) );
+
+      // Saturation / lightness tuned for contrast
+      const accA = `${hueA}, ${Math.round(lerp(60,95, 1-nx))}%, ${Math.round(lerp(40,60, ny))}%`;
+      const accB = `${hueB}, ${Math.round(lerp(60,95, nx))}%, ${Math.round(lerp(40,60, 1-ny))}%`;
+      const h1 = `${hue1}, 92%, ${Math.round(lerp(45,70, ny))}%`;
+      const h2 = `${hue2}, 88%, ${Math.round(lerp(45,70, nx))}%`;
+
+      // Apply to CSS variables for smooth transitions
+      root.style.setProperty('--accentA', accA);
+      root.style.setProperty('--accentB', accB);
+      root.style.setProperty('--h1', h1);
+      root.style.setProperty('--h2', h2);
+
+      // Slight change to text glow/shadow based on position
+      title.style.textShadow = `0 8px 22px rgba(0,0,0,0.45), 0 0 14px rgba(255,255,255,0.06)`;
+      title.style.color = `hsl(${h2})`;
+    }
+
+    // Pointer move & touch support
+    function handlePointer(x,y){
+      const nx = Math.max(0, Math.min(1, x / window.innerWidth));
+      const ny = Math.max(0, Math.min(1, y / window.innerHeight));
+      updateColors(nx, ny);
+    }
+
+    // Mouse move
+    window.addEventListener('pointermove', (e) => {
+      handlePointer(e.clientX, e.clientY);
+    }, {passive:true});
+
+    // Touch move (for older mobile browsers)
+    window.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      if(t) handlePointer(t.clientX, t.clientY);
+    }, {passive:true});
+
+    // Create ripple on pointerdown/touchstart
+    function makeRipple(x,y){
+      const r = document.createElement('div');
+      r.className = 'ripple';
+      r.style.left = x + 'px';
+      r.style.top = y + 'px';
+      document.body.appendChild(r);
+      // remove after animation
+      setTimeout(()=> r.remove(), 700);
+    }
+
+    window.addEventListener('pointerdown', (e) => {
+      makeRipple(e.clientX, e.clientY);
+    });
+
+    window.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      if(t) makeRipple(t.clientX, t.clientY);
+    }, {passive:true});
+
+    // Buttons: toggle autoplay (some browsers ignore autoplay but we still toggle attribute)
+    toggleAutoplay.addEventListener('click', () => {
+      if(player.hasAttribute('autoplay')){
+        player.removeAttribute('autoplay');
+        toggleAutoplay.textContent = 'Enable Autoplay';
+      } else {
+        player.setAttribute('autoplay','');
+        toggleAutoplay.textContent = 'Disable Autoplay';
+      }
+    });
+
+    // Randomize colors quick helper
+    randomize.addEventListener('click', () => {
+      const nx = Math.random();
+      const ny = Math.random();
+      const x = nx * window.innerWidth;
+      const y = ny * window.innerHeight;
+      handlePointer(x,y);
+      makeRipple(x,y);
+    });
+
+    // Initialize in center
+    handlePointer(window.innerWidth/2, window.innerHeight/2);
+
+    // Accessibility: keyboard randomize (R)
+    window.addEventListener('keydown', (e) => {
+      if(e.key.toLowerCase() === 'r') randomize.click();
+    });
+  </script>
 </body>
 </html>
