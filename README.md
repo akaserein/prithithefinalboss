@@ -1,2 +1,2 @@
-# 🎧 Listen to Average Non IITIAN  
+# 🎧 SINGER 👨‍🎤  
 [Click here to play](https://akaserein.github.io/prithithefinalboss/)
