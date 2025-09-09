@@ -19,4 +19,4 @@
 
 
 # # snake ❌️ mriganga ✅️
-[![Play snake](https://img.shields.io/badge/🎮-Play-with-Mriganga-pink?style=for-the-badge&logo=github)](https://akaserein.github.io/prithithefinalboss/snake.html)
+[![Play snake](https://img.shields.io/badge/🎮-Play-Mriganga-pink?style=for-the-badge&logo=github)](https://akaserein.github.io/prithithefinalboss/snake.html)
