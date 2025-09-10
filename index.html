@@ -1,401 +1,151 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Prithi The Final Boss — Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Service Unavailable</title>
   <style>
+    /* Simple, standard black & white design with a floating headline */
     :root{
-      --pink: #ffb6c1;
-      --black: #000;
-      --card-bg: rgba(255,255,255,0.03);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,sans-serif;background:#000;color:var(--pink)}
-    /* animated pink+black background (subtle) */
-    body{
-      background: linear-gradient(-45deg, #000000 0%, #0a0a0a 30%, #110101 60%, var(--pink) 100%);
-      background-size: 400% 400%;
-      animation: bgShift 12s ease infinite;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-    }
-    @keyframes bgShift{
-      0% {background-position:0% 50%;}
-      50% {background-position:100% 50%;}
-      100% {background-position:0% 50%;}
-    }
+      --bg: #ffffff; /* white background */
+      --fg: #000000; /* black foreground */
+      --accent: rgba(0,0,0,0.08);
+      --max-width: 1100px;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }*{box-sizing: border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--font-family);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+}
 
-    /* Container */
-    .card {
-      width: min(920px, 96vw);
-      max-width: 920px;
-      background: var(--card-bg);
-      border-radius: 14px;
-      padding: 18px;
-      display:flex;
-      gap: 26px;
-      align-items:center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      backdrop-filter: blur(6px);
-    }
+.card{
+  width:100%;
+  max-width:var(--max-width);
+  text-align:center;
+  padding:48px 28px;
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  box-shadow: 0 8px 24px var(--accent);
+  border:1px solid rgba(0,0,0,0.06);
+}
 
-    /* Left: player + info */
-    .left {
-      min-width: 260px;
-      max-width: 360px;
-      flex: 1;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      align-items:flex-start;
-    }
+.floating-title{
+  display:inline-block;
+  font-size:clamp(32px, 7vw, 96px);
+  line-height:0.9;
+  font-weight:700;
+  letter-spacing: -0.02em;
+  transform-origin:center;
+  padding:8px 16px;
+  position:relative;
+  -webkit-user-select:none;
+  user-select:none;
+  text-rendering:optimizeLegibility;
+}
 
-    .title {
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .title h1{
-      font-size:1.05rem;
-      margin:0;
-      color:var(--pink);
-      font-weight:600;
-    }
-    .tag {
-      font-size:0.8rem;
-      color:#ffdfe6;
-      padding:4px 8px;
-      border-radius:999px;
-      background: rgba(255,182,193,0.06);
-    }
+/* subtle layered shadow for a 'floating' look */
+.floating-title::before,
+.floating-title::after{
+  content:attr(data-text);
+  position:absolute;
+  left:0; right:0; top:0; bottom:0;
+  z-index:-1;
+  pointer-events:none;
+}
 
-    /* Small, standard native player with tidy look */
-    .player-wrap {
-      width:100%;
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    audio {
-      width: 100%;
-      height:36px;
-      border-radius:8px;
-      background:#050505;
-      padding:6px;
-      outline:none;
-    }
+.floating-title::before{
+  transform:translateY(14px) scale(0.995);
+  filter:blur(10px);
+  opacity:0.12;
+}
+.floating-title::after{
+  transform:translateY(6px) scale(0.997);
+  opacity:0.06;
+}
 
-    /* controls row */
-    .controls {
-      display:flex;
-      gap:8px;
-      align-items:center;
-      width:100%;
-      flex-wrap:wrap;
-    }
+/* floating animation */
+@keyframes floatY{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-10px) rotate(-0.6deg)}
+  100%{transform:translateY(0)}
+}
 
-    .btn, .small {
-      background: transparent;
-      border: 1px solid rgba(255,182,193,0.09);
-      color: var(--pink);
-      padding:8px 10px;
-      border-radius:8px;
-      cursor:pointer;
-      font-size:0.9rem;
-    }
-    .btn:hover, .small:hover { transform: translateY(-2px); transition:0.15s; }
+.floating-title{
+  animation: floatY 4s ease-in-out infinite;
+}
 
-    .small { padding:6px 8px; font-size:0.85rem; }
+/* short status text */
+.status{
+  margin-top:18px;
+  font-size:16px;
+  opacity:0.8;
+}
 
-    .speed-row {
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
+.meta{
+  margin-top:22px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  color:rgba(0,0,0,0.6);
+}
 
-    .speed-display {
-      min-width:56px;
-      text-align:center;
-      color:#ffdfe6;
-      font-size:0.9rem;
-    }
+.dot{width:8px;height:8px;border-radius:50%;background:var(--fg);opacity:0.08}
 
-    input[type="range"] {
-      -webkit-appearance:none;
-      width:160px;
-      background:transparent;
-    }
-    input[type="range"]::-webkit-slider-runnable-track{height:6px;background:rgba(255,182,193,0.12);border-radius:6px;}
-    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;margin-top:-6px;width:16px;height:16px;border-radius:50%;background:var(--pink);box-shadow:0 1px 6px rgba(0,0,0,0.6);}
+/* reduced motion preference */
+@media (prefers-reduced-motion: reduce){
+  .floating-title, .floating-title::before, .floating-title::after{animation:none;}
+}
 
-    .meta {
-      margin-top:6px;
-      color:#bbb;
-      font-size:0.85rem;
-    }
+/* Dark variant helper (if you want black background / white text) */
+.dark{
+  --bg: #000000;
+  --fg: #ffffff;
+  --accent: rgba(255,255,255,0.06);
+}
 
-    /* Right: visual bars */
-    .visual {
-      width: 170px;
-      display:flex;
-      align-items:flex-end;
-      gap:8px;
-      height:84px;
-      justify-content:center;
-    }
-    .bar {
-      width: 12px;
-      background: linear-gradient(180deg, rgba(255,182,193,1), rgba(255,182,193,0.25));
-      border-radius:6px;
-      height: 12px;
-      transition: height 120ms linear;
-      box-shadow: 0 4px 10px rgba(255,182,193,0.06);
-    }
+/* Responsive tweaks */
+@media (max-width:420px){
+  .card{padding:28px 18px}
+  .status{font-size:14px}
+}
 
-    /* footer small */
-    .footer {
-      margin-top:8px;
-      color:#9a9a9a;
-      font-size:0.8rem;
-    }
-
-    /* responsive */
-    @media (max-width:720px){
-      .card { flex-direction:column; gap:12px; align-items:center; padding:16px; }
-      .visual { width:100%; justify-content:space-around; height:64px; }
-      .left { align-items:center; text-align:center; }
-      .player-wrap { flex-direction:column; gap:8px; }
-    }
-
-    /* toast */
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 24px;
-      transform: translateX(-50%);
-      background: rgba(255,255,255,0.06);
-      color: #fff;
-      padding:10px 14px;
-      border-radius:8px;
-      font-size:0.9rem;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity 220ms ease, transform 220ms ease;
-    }
-    .toast.show { opacity:1; transform: translateX(-50%) translateY(-6px); pointer-events:auto; }
   </style>
 </head>
 <body>
-  <div class="card" role="region" aria-label="Audio player card">
-    <div class="left">
-      <div class="title">
-        <h1>Average Non IITIAN</h1>
-        <div class="tag">Prithi The Final Boss</div>
-      </div>
+  <main class="card" role="main" aria-labelledby="serviceTitle">
+    <h1 id="serviceTitle" class="floating-title" data-text="Service Unavailable">Service Unavailable</h1>
+    <p class="status" aria-hidden="false">We're currently performing scheduled maintenance. Please try again later.</p><div class="meta" aria-hidden="true">
+  <span class="dot" aria-hidden="true"></span>
+  <span>HTTP 503 • Service Temporarily Unavailable</span>
+</div>
 
-      <div class="player-wrap">
-        <audio id="player" controls preload="auto">
-          <source src="AverageNonIITIAN.mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
-        </audio>
-      </div>
+<!-- Small controls: toggle dark/light for previewing both black-on-white and white-on-black -->
+<div style="margin-top:22px;">
+  <button id="toggleTheme" style="background:none;border:1px solid rgba(0,0,0,0.07);padding:8px 12px;border-radius:8px;cursor:pointer">Toggle dark / light</button>
+</div>
 
-      <div class="controls" aria-hidden="false">
-        <div class="speed-row">
-          <button class="small" id="decSpeed" title="Decrease speed">-</button>
-          <input id="speedRange" type="range" min="0.5" max="2" step="0.05" value="1" aria-label="Playback speed">
-          <button class="small" id="incSpeed" title="Increase speed">+</button>
-          <div class="speed-display" id="speedDisplay">1.00×</div>
-        </div>
-
-        <div style="display:flex; gap:8px; margin-left:8px;">
-          <button class="btn" id="modeBtn" title="Toggle visual mode">Mode: Audio</button>
-          <button class="btn" id="randomBtn" title="Trigger random animation">Randomize</button>
-          <button class="btn" id="shareBtn" title="Share this page">Share</button>
-        </div>
-      </div>
-
-      <div class="meta" id="meta">
-        <div id="time">⏰ --:--:--</div>
-        <div id="date">📅 --/--/----</div>
-      </div>
-
-      <div class="footer">Tip: Play audio once to enable visual mode (browser requires interaction).</div>
-    </div>
-
-    <div class="visual" id="visual">
-      <div class="bar" data-i="0"></div>
-      <div class="bar" data-i="1"></div>
-      <div class="bar" data-i="2"></div>
-      <div class="bar" data-i="3"></div>
-      <div class="bar" data-i="4"></div>
-    </div>
-  </div>
-
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <script>
-    // Elements
-    const audio = document.getElementById('player');
-    const bars = Array.from(document.querySelectorAll('.bar'));
-    const modeBtn = document.getElementById('modeBtn');
-    const randomBtn = document.getElementById('randomBtn');
-    const shareBtn = document.getElementById('shareBtn');
-    const speedRange = document.getElementById('speedRange');
-    const speedDisplay = document.getElementById('speedDisplay');
-    const decSpeed = document.getElementById('decSpeed');
-    const incSpeed = document.getElementById('incSpeed');
-    const toast = document.getElementById('toast');
-
-    // Time & date
-    function updateTime(){ const now = new Date();
-      document.getElementById('time').textContent = '⏰ ' + now.toLocaleTimeString();
-      document.getElementById('date').textContent = '📅 ' + now.toLocaleDateString();
-    }
-    setInterval(updateTime,1000); updateTime();
-
-    // Playback speed controls
-    function setSpeed(v){
-      v = Math.max(0.5, Math.min(2, Number(v)));
-      audio.playbackRate = v;
-      speedRange.value = v;
-      speedDisplay.textContent = v.toFixed(2) + '×';
-    }
-    speedRange.addEventListener('input', e => setSpeed(e.target.value));
-    decSpeed.addEventListener('click', () => setSpeed((+speedRange.value - 0.1).toFixed(2)));
-    incSpeed.addEventListener('click', () => setSpeed((+speedRange.value + 0.1).toFixed(2)));
-    setSpeed(1);
-
-    // Toast helper
-    function showToast(msg, ms = 2000){
-      toast.textContent = msg; toast.classList.add('show');
-      clearTimeout(toast._t); toast._t = setTimeout(()=>toast.classList.remove('show'), ms);
-    }
-
-    // Share button
-    shareBtn.addEventListener('click', async () => {
-      const shareUrl = location.href;
-      const shareData = { title: document.title, text: 'Listen: Average Non IITIAN', url: shareUrl };
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-        } else if (navigator.clipboard) {
-          await navigator.clipboard.writeText(shareUrl);
-          showToast('Link copied to clipboard');
-        } else {
-          showToast('Share not supported');
-        }
-      } catch (err) {
-        showToast('Share cancelled');
-      }
-    });
-
-    // Visual modes: 'audio' or 'random'
-    let visualMode = 'audio';
-    modeBtn.addEventListener('click', () => {
-      visualMode = (visualMode === 'audio') ? 'random' : 'audio';
-      modeBtn.textContent = 'Mode: ' + (visualMode === 'audio' ? 'Audio' : 'Random');
-      showToast('Mode: ' + (visualMode === 'audio' ? 'Audio-reactive' : 'Random'));
-    });
-
-    // Randomize button triggers a burst animation
-    randomBtn.addEventListener('click', () => {
-      triggerRandomBurst();
-    });
-
-    // AudioContext + analyser (lazy init on first play/click)
-    let audioCtx = null, analyser = null, dataArray = null, source = null;
-    function initAudioContext(){
-      if (audioCtx) return;
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioCtx.createAnalyser();
-      analyser.fftSize = 256;
-      const bufferLength = analyser.frequencyBinCount;
-      dataArray = new Uint8Array(bufferLength);
-      try {
-        source = audioCtx.createMediaElementSource(audio);
-        source.connect(analyser);
-        analyser.connect(audioCtx.destination);
-      } catch(err){
-        console.warn('AudioContext createMediaElementSource failed', err);
-      }
-    }
-
-    // Animation loop
-    let rafId = null;
-    function drawLoop(){
-      if (visualMode === 'audio' && analyser && audioCtx && !audio.paused){
-        analyser.getByteFrequencyData(dataArray);
-        const chunk = Math.floor(dataArray.length / bars.length);
-        for (let i=0;i<bars.length;i++){
-          let sum = 0;
-          for (let j=i*chunk;j<(i+1)*chunk;j++){ sum += dataArray[j] || 0; }
-          const avg = sum / chunk / 255; // 0..1
-          const minH = 10, maxH = 72;
-          bars[i].style.height = (minH + avg * (maxH - minH)) + 'px';
-        }
-      } else if (visualMode === 'random'){
-        // Gentle random animation (smooth using sin + noise)
-        const t = Date.now() / 600;
-        for (let i=0;i<bars.length;i++){
-          const base = (Math.sin(t * (1 + i*0.3) + i) + 1) / 2; // 0..1
-          const noise = Math.random() * 0.35;
-          const val = Math.min(1, base * 0.9 + noise * 0.6);
-          const minH = 10, maxH = 72;
-          bars[i].style.height = (minH + val * (maxH - minH)) + 'px';
-        }
-      } else {
-        // idle state: soft pulsing
-        const t = Date.now()/1000;
-        for (let i=0;i<bars.length;i++){
-          const val = 0.15 + 0.1 * Math.sin(t * (1+i*0.4));
-          bars[i].style.height = (10 + val * 40) + 'px';
-        }
-      }
-      rafId = requestAnimationFrame(drawLoop);
-    }
-    drawLoop();
-
-    // Trigger a random burst (quick big heights)
-    function triggerRandomBurst(){
-      const prevMode = visualMode;
-      visualMode = 'random';
-      for (let i=0;i<bars.length;i++){
-        const h = 20 + Math.random() * 80;
-        bars[i].style.height = h + 'px';
-        bars[i].style.transition = 'height 180ms ease';
-      }
-      setTimeout(()=> {
-        // restore smooth transition
-        bars.forEach(b => b.style.transition = 'height 120ms linear');
-        visualMode = prevMode;
-      }, 600);
-    }
-
-    // Ensure AudioContext resumes on user interaction (some browsers require this)
-    audio.addEventListener('play', async () => {
-      initAudioContext();
-      if (audioCtx && audioCtx.state === 'suspended') {
-        try { await audioCtx.resume(); } catch(e){ console.warn(e); }
-      }
-    });
-
-    // Also init on first click anywhere to be safe
-    window.addEventListener('pointerdown', () => {
-      initAudioContext();
-    }, { once: true });
-
-    // Clean up on unload
-    window.addEventListener('unload', () => {
-      if (audioCtx && audioCtx.close) audioCtx.close();
-      cancelAnimationFrame(rafId);
-    });
-
-  </script>
-</body>
+  </main>  <script>
+    (function(){
+      const btn = document.getElementById('toggleTheme');
+      const root = document.documentElement;
+      const card = document.querySelector('.card');
+      btn.addEventListener('click', ()=>{
+        card.classList.toggle('dark');
+        // update button label for accessibility
+        btn.textContent = card.classList.contains('dark') ? 'Switch to light' : 'Switch to dark';
+      });
+    })();
+  </script></body>
 </html>
-
