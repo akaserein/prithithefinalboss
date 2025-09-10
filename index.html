@@ -6,12 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Service Unavailable</title>
   <style>
-    /* Simple, standard black & white design with a floating headline */
+    /* Simple black background & white text design with floating font */
     :root{
-      --bg: #ffffff; /* white background */
-      --fg: #000000; /* black foreground */
-      --accent: rgba(0,0,0,0.08);
-      --max-width: 1100px;
+      --bg: #000000;
+      --fg: #ffffff;
+      --accent: rgba(255,255,255,0.08);
       --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }*{box-sizing: border-box}
 html,body{height:100%}
@@ -20,8 +19,6 @@ body{
   background:var(--bg);
   color:var(--fg);
   font-family:var(--font-family);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -30,30 +27,18 @@ body{
 
 .card{
   width:100%;
-  max-width:var(--max-width);
   text-align:center;
   padding:48px 28px;
-  border-radius:14px;
-  background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  box-shadow: 0 8px 24px var(--accent);
-  border:1px solid rgba(0,0,0,0.06);
 }
 
 .floating-title{
   display:inline-block;
   font-size:clamp(32px, 7vw, 96px);
-  line-height:0.9;
   font-weight:700;
-  letter-spacing: -0.02em;
-  transform-origin:center;
-  padding:8px 16px;
   position:relative;
-  -webkit-user-select:none;
-  user-select:none;
-  text-rendering:optimizeLegibility;
+  animation: floatY 4s ease-in-out infinite;
 }
 
-/* subtle layered shadow for a 'floating' look */
 .floating-title::before,
 .floating-title::after{
   content:attr(data-text);
@@ -64,61 +49,27 @@ body{
 }
 
 .floating-title::before{
-  transform:translateY(14px) scale(0.995);
+  transform:translateY(14px);
   filter:blur(10px);
-  opacity:0.12;
+  opacity:0.15;
+  color:var(--fg);
 }
 .floating-title::after{
-  transform:translateY(6px) scale(0.997);
-  opacity:0.06;
+  transform:translateY(6px);
+  opacity:0.08;
+  color:var(--fg);
 }
 
-/* floating animation */
 @keyframes floatY{
   0%{transform:translateY(0)}
-  50%{transform:translateY(-10px) rotate(-0.6deg)}
+  50%{transform:translateY(-10px)}
   100%{transform:translateY(0)}
 }
 
-.floating-title{
-  animation: floatY 4s ease-in-out infinite;
-}
-
-/* short status text */
 .status{
   margin-top:18px;
   font-size:16px;
-  opacity:0.8;
-}
-
-.meta{
-  margin-top:22px;
-  display:flex;
-  gap:12px;
-  align-items:center;
-  justify-content:center;
-  font-size:13px;
-  color:rgba(0,0,0,0.6);
-}
-
-.dot{width:8px;height:8px;border-radius:50%;background:var(--fg);opacity:0.08}
-
-/* reduced motion preference */
-@media (prefers-reduced-motion: reduce){
-  .floating-title, .floating-title::before, .floating-title::after{animation:none;}
-}
-
-/* Dark variant helper (if you want black background / white text) */
-.dark{
-  --bg: #000000;
-  --fg: #ffffff;
-  --accent: rgba(255,255,255,0.06);
-}
-
-/* Responsive tweaks */
-@media (max-width:420px){
-  .card{padding:28px 18px}
-  .status{font-size:14px}
+  opacity:0.7;
 }
 
   </style>
@@ -126,26 +77,7 @@ body{
 <body>
   <main class="card" role="main" aria-labelledby="serviceTitle">
     <h1 id="serviceTitle" class="floating-title" data-text="Service Unavailable">Service Unavailable</h1>
-    <p class="status" aria-hidden="false">We're currently performing scheduled maintenance. Please try again later.</p><div class="meta" aria-hidden="true">
-  <span class="dot" aria-hidden="true"></span>
-  <span>HTTP 503 • Service Temporarily Unavailable</span>
-</div>
-
-<!-- Small controls: toggle dark/light for previewing both black-on-white and white-on-black -->
-<div style="margin-top:22px;">
-  <button id="toggleTheme" style="background:none;border:1px solid rgba(0,0,0,0.07);padding:8px 12px;border-radius:8px;cursor:pointer">Toggle dark / light</button>
-</div>
-
-  </main>  <script>
-    (function(){
-      const btn = document.getElementById('toggleTheme');
-      const root = document.documentElement;
-      const card = document.querySelector('.card');
-      btn.addEventListener('click', ()=>{
-        card.classList.toggle('dark');
-        // update button label for accessibility
-        btn.textContent = card.classList.contains('dark') ? 'Switch to light' : 'Switch to dark';
-      });
-    })();
-  </script></body>
+    <p class="status">We're currently performing maintenance. Please try again later.</p>
+  </main>
+</body>
 </html>
